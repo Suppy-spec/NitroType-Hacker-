@@ -1,0 +1,43 @@
+javascript:(() => {
+    let min = 84, max = 98;
+    let accuracy = Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log("Accuracy:", accuracy);
+
+    let container = document.querySelector("div.dash-copyContainer");
+    if (!container) return console.error("Container not found.");
+
+    let values = Object.values(container);
+    console.log("Values:", values);
+
+    let internalData = values[1];
+    if (
+        !internalData ||
+        !internalData.children ||
+        !internalData.children._owner ||
+        !internalData.children._owner.stateNode
+    ) {
+        return console.error("Required properties not found in child:", internalData);
+    }
+
+    let stateNode = internalData.children._owner.stateNode;
+
+    let simulateTyping = (shouldBeCorrect) => {
+        let key = shouldBeCorrect
+            ? stateNode.props.lessonContent[stateNode.typedIndex]
+            : "$"; // Incorrect character
+        stateNode.handleKeyPress("character", new KeyboardEvent("keypress", { key }));
+    };
+
+    let originalKeyHandler = stateNode.input.keyHandler;
+
+    stateNode.input.keyHandler = (eventType, event) => {
+        if (event.key === "\n") {
+            stateNode.props.useNitro();
+            return;
+        }
+
+        if (eventType === "character") {
+            simulateTyping(Math.random() < (accuracy / 100));
+        }
+    };
+})();
