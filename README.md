@@ -1,4 +1,4 @@
-# NitroType-Hacker-
+# NitroType-Exploit-
 A bookmarklet to make any key that you press in a nitrotype race be marked as correct.
 To use, go into a race and press the bookmarklet.
 Then press keys, and it will make nearly all of them correct.
